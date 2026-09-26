@@ -67,4 +67,4 @@ jobs:
           mkdir -p vendor/osamanagi/filament-abyss-theme/resources/css build
           cp resources/css/theme.css vendor/osamanagi/filament-abyss-theme/resources/css/theme.css
           ./node_modules/.bin/tailwindcss -i vendor/osamanagi/filament-abyss-theme/resources/css/theme.css -o build/theme.css
-          rg -q -- '--primary-500: #2b9c9a;' build/theme.css
+          grep -Fq -- '--primary-500: #2b9c9a;' build/theme.css
