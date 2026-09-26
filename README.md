@@ -7,6 +7,8 @@
 
 Aesthetic Abyss theme for FilamentPHP.
 
+Supports Filament 4 and 5 (PHP 8.2+). Filament 5 requires Livewire 4; follow the [Filament upgrade guide](https://filamentphp.com/docs/5.x/upgrade-guide) when upgrading an existing app.
+
 ![Dashboard Light and Dark](https://raw.githubusercontent.com/osamanagi/filament-abyss-theme/main/docs/dashboard.png)
 
 ## Installation

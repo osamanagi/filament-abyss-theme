@@ -14,13 +14,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         php: [8.3, 8.2]
+        filament: [4, 5]
         laravel: [12.*]
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 12.*
             testbench: 10.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - F${{ matrix.filament }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -31,7 +32,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: none
+          coverage: ${{ runner.os == 'Linux' && matrix.php == '8.3' && matrix.stability == 'prefer-stable' && 'pcov' || 'none' }}
 
       - name: Setup problem matchers
         run: |
@@ -40,7 +41,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer require "filament/filament:~${{ matrix.filament }}.0" "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
@@ -48,3 +49,22 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
+
+      - name: Check PHP coverage
+        if: runner.os == 'Linux' && matrix.php == '8.3' && matrix.stability == 'prefer-stable'
+        run: vendor/bin/pest --ci --coverage --min=95
+
+      - name: Set up Node.js
+        if: runner.os == 'Linux' && matrix.php == '8.3' && matrix.stability == 'prefer-stable'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Compile the theme against Filament
+        if: runner.os == 'Linux' && matrix.php == '8.3' && matrix.stability == 'prefer-stable'
+        run: |
+          npm install --no-save --no-audit --no-fund @tailwindcss/cli@4.1.18 tailwindcss@4.1.18
+          mkdir -p vendor/osamanagi/filament-abyss-theme/resources/css build
+          cp resources/css/theme.css vendor/osamanagi/filament-abyss-theme/resources/css/theme.css
+          ./node_modules/.bin/tailwindcss -i vendor/osamanagi/filament-abyss-theme/resources/css/theme.css -o build/theme.css
+          grep -Fq -- '--primary-500: #2b9c9a;' build/theme.css
