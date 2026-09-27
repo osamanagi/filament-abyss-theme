@@ -56,7 +56,7 @@ jobs:
         run: composer show -D
 
       - name: Execute tests
-        run: vendor/bin/pest --ci
+        run: vendor/bin/pest --ci --no-coverage
 
       - name: Check PHP coverage
         if: runner.os == 'Linux' && matrix.php == '8.3' && matrix.stability == 'prefer-stable'
