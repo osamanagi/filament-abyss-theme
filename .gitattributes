@@ -1,0 +1,11 @@
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/AGENTS.md export-ignore
+/CHANGELOG.md export-ignore
+/docs export-ignore
+/tests export-ignore
+/composer.lock* export-ignore
+/phpstan* export-ignore
+/phpunit.xml* export-ignore
+/pint.json export-ignore
