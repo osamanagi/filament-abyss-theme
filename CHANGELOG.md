@@ -2,6 +2,14 @@
 
 Notable changes to Filament Abyss Theme are recorded here.
 
+## 1.2.0 - 2026-09-27
+
+### What's Changed
+
+* Enhance workflows and dependencies for improved compatibility with La… by @osamanagi in https://github.com/osamanagi/filament-abyss-theme/pull/10
+
+**Full Changelog**: https://github.com/osamanagi/filament-abyss-theme/compare/1.1.0...1.2.0
+
 ## 1.1.0 - 2026-09-26
 
 ### What's Changed
